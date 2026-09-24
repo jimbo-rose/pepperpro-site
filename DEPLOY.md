@@ -4,9 +4,9 @@ The three web pages PepperPro has to have before it can be submitted.
 
 ```
 site/
-  index.html          →  https://pepperpro.app/
-  privacy/index.html  →  https://pepperpro.app/privacy
-  support/index.html  →  https://pepperpro.app/support
+  index.html          →  https://jimbo-rose.github.io/pepperpro-site/
+  privacy/index.html  →  https://jimbo-rose.github.io/pepperpro-site/privacy
+  support/index.html  →  https://jimbo-rose.github.io/pepperpro-site/support
   style.css
 ```
 
@@ -14,11 +14,11 @@ site/
 wants a URL that lands on the policy, and a reviewer who has to scroll a long
 home page to find it may record it as not found.
 
-- **Privacy policy URL** — `https://pepperpro.app/privacy`. Required by App
+- **Privacy policy URL** — `https://jimbo-rose.github.io/pepperpro-site/privacy`. Required by App
   Review guideline 5.1.1(i), and again under 5.1.3 for HealthKit.
-- **Support URL** — `https://pepperpro.app/support`. Required before App Store
+- **Support URL** — `https://jimbo-rose.github.io/pepperpro-site/support`. Required before App Store
   Connect will accept a submission.
-- **Marketing URL** — `https://pepperpro.app`. Optional.
+- **Marketing URL** — `https://jimbo-rose.github.io/pepperpro-site/`. Optional.
 
 ## It is deliberately buildless
 
