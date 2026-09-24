@@ -1,0 +1,294 @@
+/* PepperPro — the whole stylesheet.
+ *
+ * One file, shared by all three pages, because three inline copies of one rule
+ * is how this project's last several defects started.
+ *
+ * Every colour below is taken from PepperPro/Design/Theme.swift. The app is
+ * dark-first and light is derived from it; on the web the default is light and
+ * the dark values arrive through prefers-color-scheme, which is the same
+ * palette in the other order. Nothing here is fetched from anywhere: no fonts,
+ * no analytics, no CDN. A privacy policy that phones out while explaining that
+ * the app does not would be self-refuting.
+ */
+
+:root {
+  /* Theme.Surface — the raw anchors. */
+  --ground: #DFDDDB;        /* Surface.groundLight */
+  --card: #FCF9F7;          /* Surface.cardLight */
+  --card-deep: #F4F1EF;     /* Surface.cardDeepLight */
+  --well: #CFCECD;          /* Surface.wellLight */
+
+  /* Theme.ink, .inkSecondary, .inkTertiary */
+  --ink: #0B0D0F;
+  --ink-secondary: #42484E;
+  --ink-tertiary: #52585E;
+
+  --hairline: #CAC8C7;      /* Theme.hairline */
+
+  /* Theme.critical — the app icon's red. */
+  --critical: #C41220;
+  --critical-wash: #FAE0E5;
+
+  --card-radius: 16px;      /* Theme.cardRadius */
+  --well-radius: 12px;      /* Theme.wellRadius */
+  --gutter: 16px;           /* Theme.gutter */
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial, "Noto Sans", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #121015;      /* Surface.groundDark */
+    --card: #201D23;        /* Surface.cardDark */
+    --card-deep: #1A181D;   /* Surface.cardDeepDark */
+    --well: #0C0A0F;        /* Surface.wellDark */
+
+    --ink: #F5F7F8;
+    --ink-secondary: #A6ADB4;
+    --ink-tertiary: #8F979E;
+
+    --hairline: #3B3740;
+
+    --critical: #FF5A63;
+    --critical-wash: #421A24;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html {
+  /* Nothing in the app grows sideways, and neither does this. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0 var(--gutter) 64px;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* One readable column, centred, that never runs wider than a comfortable
+ * measure and never narrower than a phone with a 16px gutter each side. */
+.column {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+/* --- Skip link ---------------------------------------------------------- */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+.skip:focus {
+  left: var(--gutter);
+  top: var(--gutter);
+  z-index: 10;
+  padding: 10px 14px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--well-radius);
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.masthead {
+  padding: 48px 0 8px;
+}
+
+.wordmark {
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* The icon's red, used once per page as a signal rather than as decoration —
+ * the same job it has in the app. */
+.wordmark .mark { color: var(--critical); }
+
+/* On the two sub-pages the wordmark is a signpost, not the page title: it steps
+ * down so the h1 below it is unambiguously the largest thing on the page. */
+.masthead.sub .wordmark { font-size: 20px; }
+
+.masthead .tagline {
+  margin: 8px 0 0;
+  color: var(--ink-secondary);
+  font-size: 17px;
+}
+
+.masthead .rule {
+  height: 2px;
+  width: 44px;
+  margin: 20px 0 0;
+  background: var(--critical);
+  border: 0;
+}
+
+/* Breadcrumb back to the home page, on the two sub-pages. */
+.upnav {
+  margin: 28px 0 0;
+  font-size: 15px;
+}
+
+/* --- Cards -------------------------------------------------------------- */
+
+/* A panel resting on the ground: a real value step plus a hairline, which is
+ * how Theme.Elevation.raised draws one. No shadow — definition comes from
+ * value contrast and the line. */
+.card {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--card-radius);
+  padding: 18px var(--gutter);
+  margin: 16px 0 0;
+}
+
+.card > :first-child { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+
+/* --- Headings ----------------------------------------------------------- */
+
+h1 {
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+/* SectionLabel: uppercase, tracked wide, quietest ink tier. Uppercasing is
+ * done in CSS so the text a screen reader announces is the text as written. */
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  margin: 0 0 10px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 22px 0 2px;
+  color: var(--ink);
+}
+
+h3:first-of-type { margin-top: 0; }
+
+p {
+  margin: 0 0 12px;
+  color: var(--ink-secondary);
+}
+
+p:last-child { margin-bottom: 0; }
+
+/* The lead paragraph of a page or a card, in full-strength ink. */
+p.lead {
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+strong { color: var(--ink); font-weight: 600; }
+
+ul {
+  margin: 0 0 12px;
+  padding-left: 1.25em;
+  color: var(--ink-secondary);
+}
+
+li { margin: 0 0 8px; }
+li:last-child { margin-bottom: 0; }
+
+/* Figures and expressions sit in a monospaced face, as they do in the app. */
+code, .figure {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+
+/* A recessed well: a cut into a panel, so it goes down. */
+.well {
+  background: var(--well);
+  border: 1px solid var(--hairline);
+  border-radius: var(--well-radius);
+  padding: 14px var(--gutter);
+  margin: 0 0 12px;
+}
+
+.well:last-child { margin-bottom: 0; }
+
+/* The date line. */
+.stamp {
+  color: var(--ink-tertiary);
+  font-size: 15px;
+  margin: 12px 0 0;
+}
+
+/* --- Links -------------------------------------------------------------- */
+
+a {
+  color: var(--ink);
+  text-decoration-color: var(--critical);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+a:hover { text-decoration-thickness: 3px; }
+
+/* A visible focus ring everywhere, in the accent, never removed. */
+a:focus-visible,
+.skip:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--critical);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- The placeholder ---------------------------------------------------- */
+
+/* Marked as a placeholder on screen, not only in a comment, so nobody ships it
+ * by accident believing it is a link. */
+.placeholder {
+  background: var(--critical-wash);
+  border: 1px solid var(--critical);
+  border-radius: var(--well-radius);
+  padding: 14px var(--gutter);
+  color: var(--ink);
+}
+
+/* --- Footer ------------------------------------------------------------- */
+
+footer {
+  margin: 40px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  color: var(--ink-tertiary);
+  font-size: 15px;
+}
+
+footer p { color: var(--ink-tertiary); }
+
+footer ul {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+footer li { margin: 0; }

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy — PepperPro</title>
+<meta name="description" content="PepperPro keeps your records on your device, has no account and no server of its own, and sends nothing anywhere unless you switch on a feature that says it will.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  This page is the web half of App Review guideline 5.1.1(i). The in-app half is
+  PepperPro/Features/PrivacyPolicyView.swift and the two must say the same
+  things — word for word, section for section. If they disagree, the app is
+  making two different promises about the same data.
+
+  When PrivacyPolicyView.swift changes, change this file in the SAME commit.
+
+  One deliberate difference, and only one: the app interpolates Device.noun and
+  says "this iPhone" or "this iPad" depending on what it is running on. A web
+  page cannot know, so it uses the same type's own documented fallback —
+  "device" — which Device.swift calls house style and which is true on every
+  device the app ships to.
+-->
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="column">
+
+  <header class="masthead sub">
+    <p class="wordmark">Pepper<span class="mark">Pro</span></p>
+    <p class="upnav"><a href="../">Home</a></p>
+  </header>
+
+  <main id="main">
+
+    <h1>Privacy policy</h1>
+
+    <div class="card">
+      <h2>In one sentence</h2>
+      <p class="lead">PepperPro keeps your records on your device, has no
+      account and no server of its own, and sends nothing anywhere unless you
+      switch on a feature that says it will.</p>
+      <p class="stamp">Last updated 23 September 2026.</p>
+    </div>
+
+    <div class="card">
+      <h2>What is collected</h2>
+      <p>Nothing is collected by us. There is no account, no login, no
+      analytics, no advertising identifier and no crash reporting that
+      identifies you.</p>
+      <p>Your vials, doses, schedules, notes, photographs, lab results and diary
+      entries are written to a database on this device and stay there. They are
+      included in your device or iCloud backup if you have one, under Apple's
+      terms rather than ours.</p>
+      <p>We cannot read any of it. There is no server holding a copy.</p>
+    </div>
+
+    <div class="card">
+      <h2>Apple Health</h2>
+      <p>If you allow it, PepperPro reads weight, steps, sleep, energy and water
+      so they can be shown beside your own records. It is read on this
+      device.</p>
+      <p>PepperPro never writes to Apple Health, never uses health data for
+      advertising or marketing, and never shares it with anyone. You can
+      withdraw access at any time in iOS Settings.</p>
+    </div>
+
+    <div class="card">
+      <h2>The features that send something</h2>
+      <p>Each is off until you switch it on, and each says so again at the
+      moment you use it. Settings lists all of them.</p>
+      <p><strong>Calendar sync</strong> writes dose dates to a calendar account
+      you choose — Apple, Google, or whoever you sync with.</p>
+      <p><strong>Dictation</strong> uses iOS speech recognition. Where your
+      device has no offline model, iOS sends the audio to Apple under Apple's
+      privacy policy. PepperPro keeps no audio.</p>
+      <p><strong>Photographing a meal</strong> sends that photo to an AI
+      provider to be recognised, and returns an estimate you edit and
+      confirm.</p>
+      <p><strong>The assistant</strong> answers questions about your own records
+      on this device. Anything else goes to Anthropic using an API key you
+      supply yourself and is billed to your account; a switch controls whether
+      your records travel with the question.</p>
+      <p><strong>Market prices</strong> asks our price service what compounds
+      cost; that request is anonymous and contains nothing about you. Tapping a
+      price opens that vendor’s own site in a browser inside the app, and
+      reporting a price as wrong sends the listing and the figure you saw.</p>
+      <p><strong>Sharing or exporting</strong> hands a file to whatever you
+      pick. An export is a complete copy of your records, so where it goes then
+      matters, and it is out of the app's hands.</p>
+    </div>
+
+    <div class="card">
+      <h2>How the arithmetic works</h2>
+      <p>Reconstitution uses the dilution identity <span class="figure">C₁V₁ =
+      C₂V₂</span> — the amount of substance before and after adding water is the
+      same — together with unit conversion between mcg, mg, mL and syringe
+      marks.</p>
+      <p>None of it is invented here and none of it is specific to any compound.
+      The app applies it to the numbers you type and shows its working; it holds
+      no dosing information for any drug and has no view on what those numbers
+      should be.</p>
+    </div>
+
+    <div class="card">
+      <h2>Children</h2>
+      <p>PepperPro is not directed at children and does not knowingly hold data
+      from anyone under 13.</p>
+    </div>
+
+    <div class="card">
+      <h2>Deleting everything</h2>
+      <p>Settings ▸ Erase removes every record, every preference, the widget's
+      snapshot and any cached prices. Deleting the app removes the same data.</p>
+      <p>There is nothing for us to delete on your behalf, because there is
+      nothing held anywhere else.</p>
+    </div>
+
+    <div class="card">
+      <h2>Changes, and who to ask</h2>
+      <p>If this policy changes in a way that affects what leaves your device,
+      the app will say so rather than quietly updating a web page.</p>
+      <p>Questions: <a href="mailto:privacy@pepperpro.app">privacy@pepperpro.app</a></p>
+    </div>
+
+  </main>
+
+  <footer>
+    <ul>
+      <li><a href="../support/">Support</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="mailto:support@pepperpro.app">support@pepperpro.app</a></li>
+    </ul>
+    <p>PepperPro records and calculates. It does not give medical advice.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — PepperPro</title>
+<meta name="description" content="How to reach PepperPro support, the common questions, and how to report a problem.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  The content of this page is docs/support-page.md. Change that file and this
+  one together.
+
+  One deliberate difference: the source answers "Where is my data?" with "On
+  your iPhone", and names an iPhone again under "Reporting a problem". The app
+  also ships to iPad (TARGETED_DEVICE_FAMILY is "1,2"), and a claim about where
+  somebody's health records live is the one sentence that must not name the
+  wrong hardware — see PepperPro/Design/Device.swift. Both read "device" here,
+  which is that type's own documented fallback.
+-->
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="column">
+
+  <header class="masthead sub">
+    <p class="wordmark">Pepper<span class="mark">Pro</span></p>
+    <p class="upnav"><a href="../">Home</a></p>
+  </header>
+
+  <main id="main">
+
+    <h1>Support</h1>
+
+    <div class="card">
+      <h2>Getting in touch</h2>
+      <p><strong>Email:</strong>
+      <a href="mailto:support@pepperpro.app">support@pepperpro.app</a></p>
+      <p>We answer within two working days.</p>
+      <p class="stamp">Last updated 23 September 2026.</p>
+    </div>
+
+    <div class="card">
+      <h2>What PepperPro is</h2>
+      <p>A calculator and a logbook. It does unit conversion and dilution
+      arithmetic on numbers you type in, and it records what you tell it.</p>
+      <p>It does not recommend a dose, a schedule, a route or a product, does
+      not check interactions between things you take, does not diagnose
+      anything, and cannot verify what is in any vial. Talk to a qualified
+      healthcare professional before making any decision about a substance you
+      take.</p>
+    </div>
+
+    <div class="card">
+      <h2>Common questions</h2>
+
+      <h3>Where is my data?</h3>
+      <p>On your device. There is no account and no server holding your records.
+      See the <a href="../privacy/">privacy policy</a>.</p>
+
+      <h3>How do I get my data out?</h3>
+      <p>Settings ▸ Export. JSON or CSV, everything, handed to whatever you
+      choose.</p>
+
+      <h3>How do I delete everything?</h3>
+      <p>Settings ▸ Erase. It removes every record, every preference, the
+      widget's snapshot and any cached prices. Deleting the app removes the same
+      data. There is nothing held anywhere else for us to delete.</p>
+
+      <h3>A price in the Market tab is wrong.</h3>
+      <p>Open the listing and tap <strong>Price wrong?</strong>. That flags it
+      for re-checking. Every price shows the date it was last checked, and
+      prices move.</p>
+
+      <h3>Does the app work without a connection?</h3>
+      <p>Everything except the features that say they send something. Those are
+      listed in Settings, each marked <span class="figure">LEAVES DEVICE</span>,
+      and each says so again at the moment you use it. The calculator and the
+      logbook need nothing.</p>
+
+      <h3>Do I need an API key?</h3>
+      <p>Only for assistant questions the arithmetic cannot answer. Questions
+      about your own records are computed on the device and need no key.</p>
+    </div>
+
+    <div class="card">
+      <h2>Reporting a problem</h2>
+      <p>Email <a href="mailto:support@pepperpro.app">support@pepperpro.app</a>
+      with your device model, iOS version, and what you expected to happen. If
+      it involves a calculation, the numbers you typed in help most.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    <ul>
+      <li><a href="../support/">Support</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="mailto:support@pepperpro.app">support@pepperpro.app</a></li>
+    </ul>
+    <p>PepperPro records and calculates. It does not give medical advice.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
