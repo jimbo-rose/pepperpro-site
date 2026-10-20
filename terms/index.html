@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — PepperPro</title>
+<meta name="description" content="PepperPro is a calculator and a logbook. It does arithmetic on numbers you type in, it keeps a record of what you tell it, and nothing it shows you is medical advice.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  The web half of the terms. The in-app half is PepperPro/Features/TermsView.swift
+  and the two must say the same things — word for word, section for section.
+  `scripts/policy-parity.py` asserts it and `compliance-sweep.sh` runs that, so
+  a sentence softened here and not there fails the sweep by name.
+
+  When TermsView.swift changes, change this file in the SAME commit.
+
+  Same rules as every other page in this site: hand-written, no framework, no
+  JavaScript, nothing fetched from anywhere. A terms page that loads a font
+  from a CDN while the privacy policy beside it explains that the app phones
+  nobody is self-refuting.
+
+  Unlike the privacy page there is no Device.noun difference to note, because
+  TermsView deliberately writes "device" in its own source too — see the doc
+  comment there for why.
+-->
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="column">
+
+  <header class="masthead sub">
+    <p class="wordmark">Pepper<span class="mark">Pro</span></p>
+    <p class="upnav"><a href="../">Home</a></p>
+  </header>
+
+  <main id="main">
+
+    <h1>Terms of Service</h1>
+
+    <div class="card">
+      <h2>In one sentence</h2>
+      <p class="lead">PepperPro is a calculator and a logbook. It does
+      arithmetic on numbers you type in, it keeps a record of what you tell it,
+      and nothing it shows you is medical advice.</p>
+      <p class="lead">Using the app means you accept these terms. You are asked
+      to confirm them once, on first run, before any dose arithmetic is
+      drawn.</p>
+      <p class="stamp">Last updated 19 October 2026.</p>
+    </div>
+
+    <div class="card">
+      <h2>What the app does</h2>
+      <p>It converts between mcg, mg, mL and syringe marks, works out how much
+      water to add to reach the dose you chose, and counts how many doses a vial
+      holds. It shows the working behind every figure.</p>
+      <p>It keeps the record: vials, doses, schedules, measurements, lab
+      results, notes and photographs, on one timeline.</p>
+      <p>Every figure in the app is either one you typed or arithmetic on one
+      you typed. Nothing in it is a number this app decided you should use.</p>
+    </div>
+
+    <div class="card">
+      <h2>What the app is not</h2>
+      <p>It is not a medical device, and it is not a substitute for a
+      clinician, a pharmacist or a laboratory.</p>
+      <p>It does not recommend a dose, a schedule, a route or a product, and it
+      never fills one in for you.</p>
+      <p>It does not tell you whether a dose is right or safe for you, and it
+      does not diagnose, treat or monitor any condition.</p>
+      <p>It does not check interactions between anything you take, and it
+      raises no warning about combinations. There is no interaction checking
+      anywhere in this app, because that needs a licensed data source and a
+      regulatory posture this app does not have.</p>
+      <p>It cannot verify what is in your vial. The contents, the source, the
+      strength and the purity of anything you record are things the app knows
+      only because you typed them.</p>
+      <p>It derives no expiry. The app records dates you give it and will not
+      estimate a beyond-use date or how long a mixed vial keeps.</p>
+    </div>
+
+    <div class="card">
+      <h2>What is yours to check</h2>
+      <p>Check every calculation before you draw or inject anything. Read what
+      the screen says against the strength printed on the vial and the scale
+      printed on the barrel of the syringe in your hand.</p>
+      <p>A mark on a U-100 syringe and a mark on a U-40 syringe are different
+      amounts of liquid — two and a half times apart, on barrels that look the
+      same. The app counts marks on the scale you told it you were using and has
+      no way to see the one you are holding.</p>
+      <p>Whether what you record is legal where you live is yours to know.
+      Compounds described in the reference library are approved medicines in one
+      country and not approved for human use in another.</p>
+      <p>PepperPro is for adults. It is not directed at children and it is not
+      intended for anyone under 18.</p>
+      <p><strong>Talk to a qualified healthcare professional before making any
+      decision about a substance you take.</strong></p>
+    </div>
+
+    <div class="card">
+      <h2>The library, the prices and the shop</h2>
+      <p>The reference library is educational. An entry describes what a
+      compound is and what it has been studied for; it holds no dose, schedule
+      or amount, it is not a recommendation to take anything, and being listed
+      in it is not an endorsement.</p>
+      <p>A regulatory status quoted in an entry is a restatement of what a
+      regulator published. It is not legal advice, and published positions
+      change.</p>
+      <p>A lab report on file means a document exists and names a lab. It is
+      never a claim that the vial in your hand contains what that document
+      describes.</p>
+      <p>Prices are what a seller's own page said when it was last checked.
+      They are not quotes, nothing is held for you, and PepperPro is never a
+      party to a sale of a substance — no cart, no stock, no fulfilment.</p>
+      <p>Anything that earns us a commission says so on the same screen, before
+      you use it. Commission never changes what is listed, what comes first, or
+      what is already ticked.</p>
+    </div>
+
+    <div class="card">
+      <h2>Your records</h2>
+      <p>Your records are yours. They are kept on your device, you can export
+      the lot at any time, and Settings ▸ Erase removes every one of them.</p>
+      <p>There is no server holding a copy, which means there is no copy for
+      anyone to restore. A device that is lost, wiped or replaced takes the
+      records with it unless you had a backup or an export.</p>
+      <p>What the app does with your records, what it reads from Apple Health,
+      and the features that can send something out are all set out in the
+      privacy policy.</p>
+      <!-- The sentence above is plain text on purpose. It is one of the claims
+           policy-parity.py holds to the app word for word, and an <a> ending a
+           sentence leaves a space before the full stop once the tags are
+           stripped — which the check reported, correctly, as a difference. The
+           link is its own line instead. -->
+      <p><a href="../privacy/">Read the privacy policy</a></p>
+    </div>
+
+    <div class="card">
+      <h2>No warranty</h2>
+      <p>PepperPro is provided as it is. We do not promise that it is free of
+      defects, that it will always be available, or that any figure it shows is
+      correct for your situation.</p>
+      <p>You are responsible for what you decide to do. To the extent the law
+      allows it, we are not liable for any harm or loss that follows from using
+      the app or from relying on a figure in it.</p>
+      <p>If that is not acceptable to you, the remedy is not to use the app.</p>
+    </div>
+
+    <div class="card">
+      <h2>Changes, and who to ask</h2>
+      <p>If these terms change in a way that affects what the app does or will
+      not do, the app will say so rather than quietly updating a web page.</p>
+      <p>Questions: <a href="mailto:support@pepperpro.app">support@pepperpro.app</a></p>
+    </div>
+
+  </main>
+
+  <footer>
+    <ul>
+      <li><a href="../support/">Support</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="../terms/">Terms</a></li>
+      <li><a href="mailto:support@pepperpro.app">support@pepperpro.app</a></li>
+    </ul>
+    <p>PepperPro records and calculates. It does not give medical advice.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
