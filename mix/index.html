@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PepperPro — Mix</title>
+<meta name="description" content="Type what is printed on the vial and the amount you intend to draw. The page answers with the water to add and the mark to draw, and shows every step of the arithmetic.">
+<link rel="stylesheet" href="../style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mix">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#DFDDDB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121015" media="(prefers-color-scheme: dark)">
+<!--
+  This page is the reconstitution arithmetic that used to live inside the
+  PepperPro app. vialmath.js is a line-for-line port of the Swift VialMath
+  package and is checked against it (test.js, scripts/export-vectors.sh).
+  Nothing here is fetched from anywhere else, nothing is sent anywhere, and
+  nothing is stored except the last numbers typed, in this browser, so the
+  form is filled in next time.
+-->
+<style>
+  /* Form controls only. Everything else comes from style.css. */
+  .field { margin: 14px 0; }
+  .field label { display: block; font-size: 13px; font-weight: 600; letter-spacing: .02em;
+                 text-transform: uppercase; color: var(--ink-tertiary); margin-bottom: 6px; }
+  .row { display: flex; gap: 8px; align-items: stretch; }
+  .row input, .row select { font: inherit; font-size: 20px; color: var(--ink);
+    background: var(--card-deep); border: 1px solid var(--hairline);
+    border-radius: var(--well-radius); padding: 10px 12px; min-width: 0; }
+  .row input { flex: 1 1 auto; font-variant-numeric: tabular-nums; }
+  .row select { flex: 0 0 auto; }
+  .row input:focus, .row select:focus { outline: 2px solid var(--critical); outline-offset: 1px; }
+  .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+  .seg label { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 16px;
+    text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--card-deep);
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 8px 14px; margin: 0; cursor: pointer; }
+  .seg input { accent-color: var(--critical); margin: 0; }
+  .seg label:has(input:checked) { border-color: var(--ink); }
+  .hint { font-size: 14px; color: var(--ink-secondary); margin: 6px 0 0; }
+  .answer { font-size: 40px; font-weight: 700; line-height: 1.1; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+  .answer small { font-size: 18px; font-weight: 500; color: var(--ink-secondary); }
+  .sub { color: var(--ink-secondary); margin: 0 0 10px; }
+  .note { border-left: 3px solid var(--hairline); padding-left: 12px; color: var(--ink-secondary); font-size: 15px; }
+  .note.caution { border-left-color: var(--critical); color: var(--ink); background: var(--critical-wash); padding: 10px 12px; border-radius: 8px; }
+  .steps { list-style: none; padding: 0; margin: 0; }
+  .steps li { padding: 8px 0; border-top: 1px solid var(--hairline); }
+  .steps li:first-child { border-top: 0; }
+  .steps .l { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: .02em; color: var(--ink-tertiary); }
+  .steps .e { font-family: var(--mono); font-size: 15px; }
+  details summary { cursor: pointer; color: var(--ink-secondary); }
+  .muted { color: var(--ink-tertiary); }
+  @media (max-width: 380px) { .answer { font-size: 32px; } .row input, .row select { font-size: 18px; } }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="column">
+
+  <header class="masthead sub">
+    <p class="wordmark">Pepper<span class="mark">Pro</span></p>
+    <p class="upnav"><a href="../">Home</a></p>
+  </header>
+
+  <main id="main">
+
+    <h1>Mix</h1>
+    <p class="lead">Type what is printed on the vial and the amount you intend
+    to draw each time. The page answers with how much water to add so that
+    amount lands on a mark you can read, and shows every step of the
+    arithmetic.</p>
+
+    <form class="card" id="form" autocomplete="off" novalidate>
+      <h2>The vial</h2>
+
+      <div class="field">
+        <label for="vial">Amount in the vial</label>
+        <div class="row">
+          <input id="vial" name="vial" type="text" inputmode="decimal" placeholder="10">
+          <select id="vialUnit" name="vialUnit" aria-label="Unit of the vial amount">
+            <option value="milligram">mg</option>
+            <option value="microgram">mcg</option>
+          </select>
+        </div>
+        <p class="hint">As printed on the label. Powder only — the water is the answer, not a question.</p>
+      </div>
+
+      <div class="field">
+        <label for="cap">The vial holds</label>
+        <div class="row">
+          <input id="cap" name="cap" type="text" inputmode="decimal" placeholder="3">
+          <select aria-label="Unit" disabled><option>mL</option></select>
+        </div>
+        <p class="hint">Most 10 mg vials hold 3 mL. The answer never asks for more water than the glass can take.</p>
+      </div>
+
+      <h2>Each dose</h2>
+
+      <div class="field">
+        <label for="dose">Amount you intend to draw</label>
+        <div class="row">
+          <input id="dose" name="dose" type="text" inputmode="decimal" placeholder="250">
+          <select id="doseUnit" name="doseUnit" aria-label="Unit of the dose">
+            <option value="microgram">mcg</option>
+            <option value="milligram">mg</option>
+          </select>
+        </div>
+        <p class="hint">Your number. This page does not suggest one. 1 mg is 1,000 mcg.</p>
+      </div>
+
+      <h2>The syringe</h2>
+
+      <div class="field">
+        <label>Scale — what one mark means</label>
+        <div class="seg" role="radiogroup" aria-label="Syringe scale">
+          <label><input type="radio" name="scale" value="u100" checked> U-100 · one mark is 0.01 mL</label>
+          <label><input type="radio" name="scale" value="u40"> U-40 · one mark is 0.025 mL</label>
+        </div>
+        <p class="hint">Printed on the barrel. "Draw 10 units" is 0.10 mL on U-100 and 0.25 mL on U-40 — two and a half times the liquid for the same number. Check it every time.</p>
+      </div>
+
+      <div class="field">
+        <label>Barrel — how much it holds</label>
+        <div class="seg" role="radiogroup" aria-label="Barrel capacity">
+          <label><input type="radio" name="barrel" value="0.3"> 0.3 mL</label>
+          <label><input type="radio" name="barrel" value="0.5"> 0.5 mL</label>
+          <label><input type="radio" name="barrel" value="1" checked> 1 mL</label>
+          <label><input type="radio" name="barrel" value="3"> 3 mL</label>
+          <label><input type="radio" name="barrel" value="5"> 5 mL</label>
+        </div>
+        <p class="hint">"30-unit", "50-unit" and "100-unit" insulin syringes are 0.3, 0.5 and 1 mL. A 3 or 5 mL syringe is marked in millilitres, not units.</p>
+      </div>
+    </form>
+
+    <div class="card" id="plan" hidden>
+      <h2>Water to add</h2>
+      <p class="answer" id="planWater"></p>
+      <p class="sub" id="planLine"></p>
+      <p class="note" id="planWhy"></p>
+    </div>
+
+    <div class="card" id="already">
+      <h2>Already added the water?</h2>
+      <div class="field">
+        <label for="water">Water you added</label>
+        <div class="row">
+          <input id="water" name="water" type="text" inputmode="decimal" placeholder="2">
+          <select aria-label="Unit" disabled><option>mL</option></select>
+        </div>
+        <p class="hint">Leave blank to use the answer above.</p>
+      </div>
+      <div id="draw" hidden>
+        <p class="answer" id="drawUnits"></p>
+        <p class="sub" id="drawLine"></p>
+        <p class="note" id="drawRead"></p>
+        <p class="note" id="drawOptions" hidden></p>
+      </div>
+    </div>
+
+    <div class="card" id="working" hidden>
+      <h2>How it was worked out</h2>
+      <ul class="steps" id="steps"></ul>
+      <p class="muted">Concentration is mass over volume. Volume per dose is dose over concentration. Marks are volume times marks-per-millilitre for the scale you chose. Doses in the vial is vial over dose, and no amount of water changes it.</p>
+    </div>
+
+    <div class="card" id="empty">
+      <p>Fill in the vial and the dose and the answer appears here.</p>
+    </div>
+
+    <div class="card">
+      <h2>Keep it on your phone</h2>
+      <p>In Safari, tap Share, then <strong>Add to Home Screen</strong>. It opens
+      like an app and remembers the last numbers you typed. Nothing you type
+      leaves this page.</p>
+    </div>
+
+    <p class="note">This page does arithmetic on the numbers you type. It
+    recommends nothing, cannot verify what is in any vial, and is not medical
+    advice. A draw of fewer than five marks is hard to read on any barrel; the
+    page says so when that is the case.</p>
+
+  </main>
+
+  <footer>
+    <ul>
+      <li><a href="../support/">Support</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="../terms/">Terms</a></li>
+      <li><a href="mailto:support@pepperpro.app">support@pepperpro.app</a></li>
+    </ul>
+    <p>PepperPro records and calculates. It does not give medical advice.</p>
+  </footer>
+
+</div>
+
+<script src="vialmath.js"></script>
+<script>
+(function () {
+  "use strict";
+  var V = window.VialMath;
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $("form");
+  var KEY = "pepperpro.mix.v1";
+
+  // A number typed by a person: a comma is a thousands separator unless it
+  // is the only separator, in which case it is a decimal point (10,000 IU
+  // once became 10 in the app because of exactly this).
+  function num(s) {
+    s = String(s || "").trim();
+    if (!s) return NaN;
+    if (s.indexOf(",") !== -1 && s.indexOf(".") === -1) {
+      var parts = s.split(",");
+      s = (parts.length === 2 && parts[1].length !== 3) ? parts.join(".") : parts.join("");
+    } else {
+      s = s.replace(/,/g, "");
+    }
+    return Number(s);
+  }
+  function checked(name) {
+    var el = form.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : null;
+  }
+  function cap(ml) {
+    for (var i = 0; i < V.SyringeCapacity.common.length; i++) {
+      if (V.SyringeCapacity.common[i].millilitres === ml) return V.SyringeCapacity.common[i];
+    }
+    return V.SyringeCapacity.insulin100;
+  }
+  function plural(n, one, many) { return n === 1 ? one : many; }
+  function marksWord(barrel) { return V.isMarkedInUnits(barrel) ? "marks" : "units"; }
+
+  function read() {
+    return {
+      vial: num($("vial").value), vialUnit: $("vialUnit").value,
+      cap: num($("cap").value) || 3,
+      dose: num($("dose").value), doseUnit: $("doseUnit").value,
+      scale: checked("scale") || "u100",
+      barrel: Number(checked("barrel") || 1),
+      water: num($("water").value)
+    };
+  }
+
+  function readabilityText(r, barrel, scaleName) {
+    var sc = V.SyringeScale[scaleName].label;
+    switch (r.kind) {
+      case "overflows": return "That draw needs more than the " + V.fmt(r.value) + " marks this barrel has on " + sc + ". It will not fit in one go.";
+      case "veryHardToRead": return V.fmt(r.value, 2) + " marks sits in the first few on the barrel, where a small misread is a large error.";
+      case "tight": return V.fmt(r.value, 2) + " marks is readable but unforgiving. A smaller barrel spreads the same volume over more length.";
+      case "nearCapacity": return V.fmt(r.value, 2) + " marks is near the top of the barrel. Fine to measure, no headroom.";
+      default: return V.fmt(r.value, 2) + " marks sits in a comfortable part of the scale.";
+    }
+  }
+
+  function render() {
+    var f = read();
+    var vialMass = V.mass(isFinite(f.vial) ? f.vial : 0, f.vialUnit);
+    var dose = V.mass(isFinite(f.dose) ? f.dose : 0, f.doseUnit);
+    var barrel = cap(f.barrel);
+    var ready = vialMass.micrograms > 0 && dose.micrograms > 0;
+
+    $("empty").hidden = ready;
+    if (!ready) { $("plan").hidden = true; $("draw").hidden = true; $("working").hidden = true; save(f); return; }
+
+    // The inverted question first: dose in, water out.
+    var plan = V.dilutionPlan(vialMass, dose, f.scale, barrel, V.volume(f.cap));
+    var sc = V.SyringeScale[f.scale].label;
+    if (plan) {
+      $("plan").hidden = false;
+      $("planWater").innerHTML = "Add " + V.fmt(plan.diluent.millilitres) + " <small>mL</small>";
+      $("planLine").textContent = "Each dose is then " + V.fmt(plan.units, 1) + " " + marksWord(barrel) + " on " + sc +
+        " · " + plan.doses + " " + plural(plan.doses, "dose", "doses") + " in the vial";
+      var why;
+      var cls = "note";
+      switch (plan.limit) {
+        case "comfortable": why = "Thirty marks is the comfortable ceiling. More water would not make the draw easier to read and would use glass that could have held doses."; break;
+        case "vialCapacity": why = "The vial cannot hold more than " + V.fmt(f.cap) + " mL, so this is as far up the barrel as the dose can go."; break;
+        case "barrelLength": why = "More water would push the draw past the end of a " + barrel.name + " barrel. A bigger barrel would allow more water."; break;
+        case "doseTooSmallForVial": why = "Even filling the vial leaves this dose inside the first few marks. Nothing about the water can fix that; the numbers themselves are the problem. Check the units on both amounts."; cls = "note caution"; break;
+      }
+      $("planWhy").textContent = why;
+      $("planWhy").className = cls;
+    } else {
+      $("plan").hidden = false;
+      $("planWater").textContent = "—";
+      $("planLine").textContent = "";
+      $("planWhy").textContent = dose.micrograms > vialMass.micrograms
+        ? "One dose is larger than the whole vial. Check the amounts and their units."
+        : "Check the amounts.";
+      $("planWhy").className = "note caution";
+    }
+
+    // The forward solve, on the water they added or on the answer above.
+    var water = isFinite(f.water) && f.water > 0 ? f.water : (plan ? plan.diluent.millilitres : NaN);
+    $("water").placeholder = plan ? V.fmt(plan.diluent.millilitres) : "2";
+    if (!(water > 0)) { $("draw").hidden = true; $("working").hidden = true; save(f); return; }
+    var input = { vialMass: vialMass, diluent: V.volume(water), dose: dose, scale: f.scale, capacity: barrel, displayUnit: f.vialUnit };
+    var r;
+    try { r = V.solve(input); } catch (e) {
+      $("draw").hidden = false;
+      $("drawUnits").textContent = "—";
+      $("drawLine").textContent = "";
+      $("drawRead").textContent = e.message;
+      $("drawRead").className = "note caution";
+      $("drawOptions").hidden = true;
+      $("working").hidden = true;
+      save(f);
+      return;
+    }
+    $("draw").hidden = false;
+    if (V.isMarkedInUnits(barrel)) {
+      $("drawUnits").innerHTML = "Draw to " + V.fmt(r.doseUnits, 2) + " <small>on " + sc + "</small>";
+    } else {
+      $("drawUnits").innerHTML = "Draw " + V.fmt(r.doseVolume.millilitres, 2) + " <small>mL</small>";
+    }
+    $("drawLine").textContent = V.fmt(r.doseVolume.millilitres, 4) + " mL per dose · " +
+      V.fmt(V.concentrationValue(r.concentration, f.vialUnit)) + " " + V.MassUnit[f.vialUnit].symbol + "/mL · " +
+      r.dosesPerVial + " " + plural(r.dosesPerVial, "dose", "doses") + " in the vial";
+    $("drawRead").textContent = readabilityText(r.readability, barrel, f.scale);
+    $("drawRead").className = V.warrantsSuggestion(r.readability) ? "note caution" : "note";
+
+    var opts = V.readabilityOptions(input, r, V.volume(f.cap));
+    if (opts.length) {
+      var lines = opts.map(function (o) {
+        if (o.kind === "moreDiluent") return "With " + V.fmt(o.volume.millilitres) + " mL of water instead, the same dose would sit at " + V.fmt(o.resultingUnits) + " marks.";
+        return "On a " + o.capacity.name + " barrel the same draw reads more easily.";
+      });
+      $("drawOptions").textContent = lines.join(" ");
+      $("drawOptions").hidden = false;
+    } else {
+      $("drawOptions").hidden = true;
+    }
+
+    var ul = $("steps");
+    ul.innerHTML = "";
+    r.steps.forEach(function (s) {
+      var li = document.createElement("li");
+      var l = document.createElement("span"); l.className = "l"; l.textContent = s.label;
+      var e = document.createElement("span"); e.className = "e"; e.textContent = s.expression;
+      li.appendChild(l); li.appendChild(e); ul.appendChild(li);
+    });
+    $("working").hidden = false;
+    save(f);
+  }
+
+  // The last numbers typed stay in this browser so the form is filled next
+  // time. A convenience, not a record: nothing reads it but this page.
+  function save(f) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        vial: $("vial").value, vialUnit: f.vialUnit, cap: $("cap").value,
+        dose: $("dose").value, doseUnit: f.doseUnit, scale: f.scale, barrel: f.barrel, water: $("water").value
+      }));
+    } catch (e) {}
+  }
+  function restore() {
+    var q = new URLSearchParams(location.search);
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+    var src = q.has("vial") || q.has("dose") ? {
+      vial: q.get("vial"), vialUnit: q.get("vialUnit"), cap: q.get("cap"),
+      dose: q.get("dose"), doseUnit: q.get("doseUnit"), scale: q.get("scale"), barrel: q.get("barrel"), water: q.get("water")
+    } : saved;
+    if (!src) return;
+    if (src.vial) $("vial").value = src.vial;
+    if (src.vialUnit && (src.vialUnit === "milligram" || src.vialUnit === "microgram" || src.vialUnit === "mg" || src.vialUnit === "mcg"))
+      $("vialUnit").value = src.vialUnit === "mg" ? "milligram" : src.vialUnit === "mcg" ? "microgram" : src.vialUnit;
+    if (src.cap) $("cap").value = src.cap;
+    if (src.dose) $("dose").value = src.dose;
+    if (src.doseUnit && (src.doseUnit === "milligram" || src.doseUnit === "microgram" || src.doseUnit === "mg" || src.doseUnit === "mcg"))
+      $("doseUnit").value = src.doseUnit === "mg" ? "milligram" : src.doseUnit === "mcg" ? "microgram" : src.doseUnit;
+    if (src.scale === "u40" || src.scale === "u100") form.querySelector('input[name="scale"][value="' + src.scale + '"]').checked = true;
+    var b = Number(src.barrel);
+    if ([0.3, 0.5, 1, 3, 5].indexOf(b) !== -1) form.querySelector('input[name="barrel"][value="' + b + '"]').checked = true;
+    if (src.water) $("water").value = src.water;
+  }
+
+  restore();
+  form.addEventListener("input", render);
+  $("water").addEventListener("input", render);
+  form.addEventListener("submit", function (e) { e.preventDefault(); render(); });
+  render();
+})();
+</script>
+</body>
+</html>

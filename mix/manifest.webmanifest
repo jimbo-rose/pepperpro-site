@@ -1,0 +1,10 @@
+{
+  "name": "PepperPro Mix",
+  "short_name": "Mix",
+  "description": "How much water to add, and which mark to draw to, for the numbers you type.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#DFDDDB",
+  "theme_color": "#C41220"
+}
